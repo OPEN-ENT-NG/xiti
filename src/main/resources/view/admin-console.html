@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>{{#i18n}}xiti.title{{/i18n}}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script src="{{#infra}}js/loader.js{{/infra}}" type="text/javascript" id="context"></script>
+		<script src="/xiti/public/js/model.js" type="text/javascript"></script>
+		<script src="/xiti/public/js/controller.js" type="text/javascript"></script>
+		<script type="text/ng-template" id="empty"></script>
+	</head>
+
+	<body ng-controller="XitiController">
+		<admin-portal>
+			<form name="xitiform" novalidate>
+				<article class="twelve cell list-view">
+					<h1 class="reduce-block-eight"><i18n>xiti.admin.header</i18n></h1>
+
+					<hr class="separator">
+
+					<h2 class="reduce-block-eight"><i18n>xiti.plateforme.parameters</i18n></h2>
+					<div class="row">
+						<label class="five cell"><i18n>xiti.id.collectivite</i18n></label>
+						<input class="five cell" type="number" ng-model="conf.ID_COLLECTIVITE"
+							min="0"
+							complete-change="conf.upsertPlatform()"/>
+					</div>
+					<div class="row">
+						<label class="five cell"><i18n>xiti.id.projet</i18n></label>
+						<input class="five cell" type="number" ng-model="conf.ID_PROJET"
+							min="0"
+							complete-change="conf.upsertPlatform()"/>
+					</div>
+					<div class="row">
+						<label class="five cell"><i18n>xiti.id.plateforme</i18n></label>
+						<input class="five cell" type="number" ng-model="conf.ID_PLATEFORME"
+							min="0"
+							complete-change="conf.upsertPlatform()"/>
+					</div>
+
+					<h2 class="reduce-block-eight"><i18n>xiti.structure.parameters</i18n></h2>
+					<ul style="list-style: none">
+						<li class="row" ng-repeat="structure in structures.all | orderBy: 'name'">
+							<label class="five cell">[[structure.name]]</label>
+							<input class="five cell" type="number" ng-model="conf.structureMap[structure.id]"
+								min="0"
+								ng-blur="conf.upsertStructure(structure.id)"/>
+						</li>
+					</ul>
+				</article>
+			</form>
+		</admin-portal>
+		<xiti></xiti>
+	</body>
+
+</html>

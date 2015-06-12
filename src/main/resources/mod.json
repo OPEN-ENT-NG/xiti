@@ -1,0 +1,11 @@
+{
+	"main" : "fr.wseduc.xiti.Xiti",
+	"port" : 8049,
+	"app-name" : "Xiti",
+	"app-address" : "/xiti",
+	"app-icon" : "Xiti-large",
+	"app-displayName" : "Xiti",
+	"mode": "dev",
+	"entcore.port" : 8090,
+	"auto-redeploy": true
+}

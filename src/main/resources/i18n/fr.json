@@ -1,0 +1,10 @@
+{
+	"xiti.title" : "Xiti",
+	"xiti.admin.header": "Paramétrage de l'application Xiti",
+	"xiti.plateforme.parameters": "Variables de plateforme",
+	"xiti.structure.parameters": "Variables de structure",
+	"xiti.id.collectivite": "Identifiant de la collectivité",
+	"xiti.id.plateforme": "Identifiant de la plateforme",
+	"xiti.id.projet": "Identifiant du projet",
+	"xiti.id.etab": "Identifiant de l'établissement"
+}
