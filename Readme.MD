@@ -1,7 +1,7 @@
 Application XiTi
 ================
 
-## 
+##
 
 ## Configuration du springboard
 
@@ -79,3 +79,7 @@ Pour ajouter l'onglet nécessaires, il faut modifier la configuration du springb
 ```
 
 <em>**Ne pas oublier de générer la configuration finale en utilisant `gradle generateConf`ou `gradle generateTestConf` une fois le paramétrage fini.**</em>
+
+#### Activer le marquage XiTi
+
+Dans le fichier de configuration Json généré, dans la configuration de l'application XiTi, passer le booléen `active` à `true`.

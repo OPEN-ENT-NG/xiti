@@ -10,6 +10,8 @@ import org.vertx.java.core.json.JsonObject;
 import fr.wseduc.rs.*;
 import fr.wseduc.security.ActionType;
 import fr.wseduc.security.SecuredAction;
+import fr.wseduc.webutils.Either;
+import fr.wseduc.webutils.http.Renders;
 import fr.wseduc.webutils.request.RequestUtils;
 import fr.wseduc.xiti.filters.XitiFilter;
 import fr.wseduc.xiti.services.XitiService;
@@ -27,7 +29,19 @@ public class XitiController extends MongoDbControllerHelper {
 	@Get("/config")
 	@SecuredAction(type = ActionType.AUTHENTICATED, value = "")
 	public void getConfig(final HttpServerRequest request){
-		service.getConfig(DefaultResponseHandler.defaultResponseHandler(request));
+		service.getConfig(new Handler<Either<String, JsonObject>>() {
+			@Override
+			public void handle(Either<String, JsonObject> event) {
+				if (event.isRight()) {
+					Renders.renderJson(request,
+							event.right().getValue().putBoolean("active", container.config().getBoolean("active", false)), 200);
+				} else {
+					JsonObject error = new JsonObject()
+							.putString("error", event.left().getValue());
+					Renders.renderJson(request, error, 400);
+				}
+			}
+		});
 	}
 
 	@Get("/admin-console")
