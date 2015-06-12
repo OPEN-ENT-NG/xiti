@@ -40,10 +40,10 @@ configurations.all {
 
 def configurePom(def pom) {
 	pom.project {
-		description 'Xiti (ent-core)'
+		description 'Xiti'
 		inceptionYear '2015'
 		packaging 'zip'
-		url 'http://code.web-education.net/one/xiti'
+		url 'http://code.web-education.net/ong/xiti'
 
 		developers {
 			developer {
@@ -54,7 +54,7 @@ def configurePom(def pom) {
 		}
 
 		scm {
-			url 'git@code.web-education.net:one/xiti.git'
+			url 'git@code.web-education.net:ong/xiti.git'
 		}
 
 		properties {
