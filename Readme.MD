@@ -19,6 +19,8 @@ Application XiTi
 
 - Copier les directives contenues dans le fichier  `[xiti]/src/main/resources/public/js/springboardDirectives/directives.js` dans le fichier des directives du springboard, typiquement situé dans `[springboard]/assets/themes/[nom du theme]/js/directives.js`. Des précisions sont écrites sous forme de commentaires javascript.
 
+- Copier le script `src/main/resources/public/js/lib/xtfirst_ENT.js` dans le springboard.
+
 #### Configuration des applications
 
 Dans le fichier de template de configuration généré par gradle, il faut modifier la configuration de chaque application afin de rajouter un identifiant XiTi propre au plan de marquage de chaque plateforme.
