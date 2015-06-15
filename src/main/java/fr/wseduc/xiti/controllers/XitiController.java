@@ -34,7 +34,7 @@ public class XitiController extends MongoDbControllerHelper {
 			public void handle(Either<String, JsonObject> event) {
 				if (event.isRight()) {
 					Renders.renderJson(request,
-							event.right().getValue().putBoolean("active", container.config().getBoolean("active", false)), 200);
+							event.right().getValue().putBoolean("active", Boolean.valueOf(container.config().getString("active", "false"))), 200);
 				} else {
 					JsonObject error = new JsonObject()
 							.putString("error", event.left().getValue());
