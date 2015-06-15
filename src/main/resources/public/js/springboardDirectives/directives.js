@@ -25,8 +25,8 @@ module.directive('xiti', function($http){
 
 				//Profile id map
 				scope.profileMap = {
-					"Teacher": 1,
-					"Student": 2,
+					"Student": 1,
+					"Teacher": 2,
 					"Relative": 3,
 					"Personnel": 4
 				}
