@@ -111,6 +111,10 @@ module.directive('xiti', function($http){
 				var getXitiConfig = function(hook){
 					return function(){
 						$http.get('/xiti/config').success(function(data){
+							//If XiTi is disabled
+							if(!data.active)
+								return
+
 							scope.xitiConf.ID_COLLECTIVITE = data.ID_COLLECTIVITE
 							scope.xitiConf.ID_PLATEFORME = data.ID_PLATEFORME
 							scope.xitiConf.ID_PROJET = data.ID_PROJET
@@ -156,8 +160,14 @@ module.directive('xiti', function($http){
 						var inUserbook = scope.locationPath.indexOf("/userbook") === 0
 						////////////////////////////////////////
 
-						$http.get('/' + (inUserbook ? 'directory' : appPrefix) + '/conf/public').success(function(data){
-							var currentLocation = scope.locationPath
+						// Eliot workaround //
+						var inEliot = false;
+						if(typeof eliotPrefix !== "undefined"){
+							inEliot = true
+						}
+
+						$http.get('/' + (inUserbook ? 'directory' : inEliot ? 'eliot' : appPrefix) + '/conf/public').success(function(data){
+							var currentLocation = inEliot ? '/eliot/'+eliotPrefix : scope.locationPath
 
 							var serviceObj = getOrElse(data.xiti, 'ID_SERVICE', {})
 							scope.xitiConf.ID_SERVICE = getOrElse(serviceObj, 'default', '')
