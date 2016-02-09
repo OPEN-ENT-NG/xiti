@@ -1,6 +1,14 @@
 Application XiTi
 ================
 
+# À propos de l'application XITI (marquage CDC / MEN)
+
+* licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt)
+* développeur : WSE
+* financeur : Région Picardie, Conseil général 91, Région Poitou Charente
+* description : Application permettant de s'interfacer avec le dispositif et suivi d'audience des ENT mis en place par le MEN et la CDC
+
+
 ## Configuration du springboard
 
 **Similiaire aux autres applications :**
