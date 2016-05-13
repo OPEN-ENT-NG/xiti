@@ -3,10 +3,13 @@ Application XiTi
 
 # À propos de l'application XITI (marquage CDC / MEN)
 
-* licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt)
-* développeur : WSE
-* financeur : Région Picardie, Conseil général 91, Région Poitou Charente
-* description : Application permettant de s'interfacer avec le dispositif et suivi d'audience des ENT mis en place par le MEN et la CDC
+* Licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt) - Copyright Conseil Régional Nord Pas de Calais - Picardie, Conseil départemental de l'Essonne, Conseil régional d'Aquitaine-Limousin-Poitou-Charentes
+
+* Développeur(s) : Open Digital Education
+
+* Financeur(s) : Région Nord Pas de Calais-Picardie,  Département 91, Région Aquitaine-Limousin-Poitou-Charentes
+
+* Description : Application permettant de s'interfacer avec le dispositif et suivi d'audience des ENT mis en place par le MEN et la CDC
 
 
 ## Configuration du springboard
