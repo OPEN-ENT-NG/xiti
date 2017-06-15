@@ -20,12 +20,6 @@
 
 					<h2 class="reduce-block-eight"><i18n>xiti.plateforme.parameters</i18n></h2>
 					<div class="row">
-						<label class="five cell"><i18n>xiti.id.collectivite</i18n></label>
-						<input class="five cell" type="number" ng-model="conf.ID_COLLECTIVITE"
-							min="0"
-							complete-change="conf.upsertPlatform()"/>
-					</div>
-					<div class="row">
 						<label class="five cell"><i18n>xiti.id.projet</i18n></label>
 						<input class="five cell" type="number" ng-model="conf.ID_PROJET"
 							min="0"
@@ -39,18 +33,62 @@
 					</div>
 
 					<h2 class="reduce-block-eight"><i18n>xiti.structure.parameters</i18n></h2>
-					<ul style="list-style: none">
-						<li class="row" ng-repeat="structure in structures.all | orderBy: 'name'">
-							<label class="five cell">[[structure.name]]</label>
-							<input class="five cell" type="number" ng-model="conf.structureMap[structure.id]"
-								min="0"
-								ng-blur="conf.upsertStructure(structure.id)"/>
-						</li>
-					</ul>
+					<div class=" reduce-block-eight five">
+						<label class=""><i18n>Saisie en masse : </i18n></label>
+						<input class="three" maxlength="3" ng-model="inputCode" i18n-placeholder="code"/>
+						<input class="five" type="number" ng-model="inputCollectiviteId" min="0" i18n-placeholder="xiti.id.collectivite"/>
+						<button class="right-magnet" ng-click="putcollectiviteIdByUAI(inputCode, inputCollectiviteId)">Valider</button>
+					</div>
+					<div class="reduce-block-eight" >
+						[[initNewStructures()]]
+						<table class="">
+							<thead>
+							<tr>
+								<th  >
+									<label><i18n>name</i18n></label>
+
+								</th>
+								<th >
+									<label><i18n>UAI</i18n></label>
+
+								</th>
+								<th >
+									<label><i18n>xiti.id.etab</i18n></label>
+
+								</th>
+								<th  >
+									<label><i18n>xiti.id.collectivite</i18n></label>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr  ng-repeat="structure in structures.all | orderBy: 'name'">
+								<td align="left">
+									<label>[[structure.name]]</label>
+								</td>
+								<td align="left">
+									<label ng-if="structure.UAI">[[structure.UAI]]</label>
+									<label ng-if="!structure.UAI">N/A</label>
+								</td>
+								<td align="left">
+									<input class="" type="number" ng-model="conf.structureMap[structure.id].id"
+										   min="0"
+										   ng-blur="conf.upsertStructure(structure.id)"/></td>
+								<td align="left">
+									<input class="" type="number" ng-model="conf.structureMap[structure.id].collectiviteId"
+										   min="0"
+										   ng-blur="conf.upsertStructure(structure.id)"/>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
 				</article>
 			</form>
 		</admin-portal>
 		<xiti></xiti>
+
+
 	</body>
 
 </html>

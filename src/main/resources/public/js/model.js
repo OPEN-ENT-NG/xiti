@@ -1,5 +1,5 @@
 function XitiConf(){}
-XitiConf.prototype.get = function(){
+XitiConf.prototype.get = function(callback){
 	var that = this
 	http().get('/xiti/config').done(function(data){
 		that.updateData(data)
@@ -18,12 +18,18 @@ XitiConf.prototype.upsertPlatform = function(){
 XitiConf.prototype.upsertStructure = function(structureId){
 	if(!structureId)
 		return
-	if(!this.structureMap[structureId])
-		this.structureMap[structureId] = "0"
-	http().put('/xiti/structure/'+structureId+'/'+this.structureMap[structureId]).done(function(){
+	http().putJson('/xiti/structure/'+structureId, this.structureMap[structureId])
+		.done(function(){
 		//notify?
 	})
 }
+XitiConf.prototype.upsertStructureByUAI = function(data){
+    var copyCat = JSON.parse(JSON.stringify(data))
+    http().putJson('/xiti/structuresByUAI', copyCat).done(function(){
+        //notify?
+    })
+}
+
 
 function Structure(){}
 
