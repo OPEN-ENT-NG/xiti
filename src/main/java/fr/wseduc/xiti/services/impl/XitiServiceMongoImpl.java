@@ -22,6 +22,7 @@ package fr.wseduc.xiti.services.impl;
 import org.entcore.common.mongodb.MongoDbResult;
 import org.entcore.common.service.impl.MongoDbCrudService;
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import fr.wseduc.mongodb.MongoDb;
@@ -46,13 +47,26 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 		mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
-	public void upsertStructure(String structureId, int xitiId, Handler<Either<String, JsonObject>> handler) {
+	public void upsertStructure(String structureId, JsonObject structure, Handler<Either<String, JsonObject>> handler) {
 		JsonObject criteria = new JsonObject().putBoolean("config", true);
 		JsonObject data = new JsonObject()
 			.putObject("$set", new JsonObject()
-				.putNumber("structureMap."+structureId, xitiId));
+				.putObject("structureMap."+structureId, new JsonObject().putNumber("id",structure.getNumber("id")).
+						putNumber("collectiviteId",structure.getNumber("collectiviteId"))));
 
 		mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(handler));
+	}
+
+	public void upsertStructures(JsonArray array, Handler<Either<String, JsonObject>> handler){
+		JsonObject criteria = new JsonObject().putBoolean("config", true);
+		JsonObject input = new JsonObject();
+		for(Object ob : array){
+			JsonObject j = (JsonObject) ob;
+			input.putObject("structureMap."+j.getString("structureId"),
+					new JsonObject().putNumber("id",j.getNumber("id")).
+							putNumber("collectiviteId",j.getNumber("collectiviteId")));
+		}
+		mongo.update(collection, criteria, new JsonObject().putObject("$set", input), true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
 	public void getConfig(Handler<Either<String, JsonObject>> handler) {

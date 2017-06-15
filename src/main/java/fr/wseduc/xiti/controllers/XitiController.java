@@ -24,6 +24,7 @@ import org.entcore.common.http.response.DefaultResponseHandler;
 import org.entcore.common.mongodb.MongoDbControllerHelper;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServerRequest;
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 import fr.wseduc.rs.*;
@@ -70,18 +71,27 @@ public class XitiController extends MongoDbControllerHelper {
 		renderView(request);
 	}
 
-	@Put("/structure/:structureId/:xitiId")
+	@Put("/structure/:structureId")
 	@SecuredAction(value = "", type = ActionType.RESOURCE)
 	@ResourceFilter(XitiFilter.class)
 	public void setupApplication(final HttpServerRequest request){
-		try{
-			final String structureId = request.params().get("structureId");
-			final int xitiId = Integer.parseInt(request.params().get("xitiId"));
+		final String structureId = request.params().get("structureId");
+		RequestUtils.bodyToJson(request, new Handler<JsonObject>() {
+			public void handle(JsonObject data) {
+				service.upsertStructure(structureId, data, DefaultResponseHandler.defaultResponseHandler(request));
+			}
+		});
+	}
 
-			service.upsertStructure(structureId, xitiId, DefaultResponseHandler.defaultResponseHandler(request));
-		} catch (NumberFormatException n) {
-			badRequest(request);
-		}
+	@Put("/structuresByUAI")
+	@SecuredAction(value = "", type = ActionType.RESOURCE)
+	@ResourceFilter(XitiFilter.class)
+	public void structuresByUAI(final HttpServerRequest request){
+		RequestUtils.bodyToJsonArray(request, new Handler<JsonArray>() {
+			public void handle(JsonArray data) {
+				service.upsertStructures(data, DefaultResponseHandler.defaultResponseHandler(request));
+			}
+		});
 	}
 
 	@Put("/platform")
