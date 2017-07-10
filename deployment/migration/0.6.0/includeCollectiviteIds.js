@@ -7,7 +7,7 @@ if(plateforme != null){
 		id  = structureMaptmp[s];
         setMap[s] =
             {
-                "id" : NumberInt(id),
+                "id" : NumberInt(structureMaptmp[s].id),
                 "collectiviteId" : NumberInt(plateforme.ID_COLLECTIVITE)
             }
     }
