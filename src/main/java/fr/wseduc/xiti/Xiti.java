@@ -29,7 +29,7 @@ public class Xiti extends BaseServer {
 	private static final String collection = "Xiti";
 
 	@Override
-	public void start() {
+	public void start() throws Exception {
 		super.start();
 		addController(new XitiController(collection));
 	}

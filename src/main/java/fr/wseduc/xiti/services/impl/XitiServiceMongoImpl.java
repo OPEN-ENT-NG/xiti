@@ -21,9 +21,9 @@ package fr.wseduc.xiti.services.impl;
 
 import org.entcore.common.mongodb.MongoDbResult;
 import org.entcore.common.service.impl.MongoDbCrudService;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.Handler;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import fr.wseduc.mongodb.MongoDb;
 import fr.wseduc.webutils.Either;
@@ -41,36 +41,36 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 	}
 
 	public void upsertPlatform(JsonObject data, Handler<Either<String, JsonObject>> handler){
-		JsonObject criteria = new JsonObject().putBoolean("config", true);
-		data.putBoolean("config", true);
+		JsonObject criteria = new JsonObject().put("config", true);
+		data.put("config", true);
 
 		mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
 	public void upsertStructure(String structureId, JsonObject structure, Handler<Either<String, JsonObject>> handler) {
-		JsonObject criteria = new JsonObject().putBoolean("config", true);
+		JsonObject criteria = new JsonObject().put("config", true);
 		JsonObject data = new JsonObject()
-			.putObject("$set", new JsonObject()
-				.putObject("structureMap."+structureId, new JsonObject().putNumber("id",structure.getNumber("id")).
-						putNumber("collectiviteId",structure.getNumber("collectiviteId"))));
+			.put("$set", new JsonObject()
+				.put("structureMap."+structureId, new JsonObject().put("id",structure.getLong("id")).
+						put("collectiviteId",structure.getLong("collectiviteId"))));
 
 		mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
 	public void upsertStructures(JsonArray array, Handler<Either<String, JsonObject>> handler){
-		JsonObject criteria = new JsonObject().putBoolean("config", true);
+		JsonObject criteria = new JsonObject().put("config", true);
 		JsonObject input = new JsonObject();
 		for(Object ob : array){
 			JsonObject j = (JsonObject) ob;
-			input.putObject("structureMap."+j.getString("structureId"),
-					new JsonObject().putNumber("id",j.getNumber("id")).
-							putNumber("collectiviteId",j.getNumber("collectiviteId")));
+			input.put("structureMap."+j.getString("structureId"),
+					new JsonObject().put("id",j.getLong("id")).
+							put("collectiviteId",j.getLong("collectiviteId")));
 		}
-		mongo.update(collection, criteria, new JsonObject().putObject("$set", input), true, false, MongoDbResult.validActionResultHandler(handler));
+		mongo.update(collection, criteria, new JsonObject().put("$set", input), true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
 	public void getConfig(Handler<Either<String, JsonObject>> handler) {
-		JsonObject criteria = new JsonObject().putBoolean("config", true);
+		JsonObject criteria = new JsonObject().put("config", true);
 
 		mongo.findOne(collection, criteria, MongoDbResult.validResultHandler(handler));
 	}
