@@ -22,10 +22,10 @@ package fr.wseduc.xiti.controllers;
 import org.entcore.common.http.filter.ResourceFilter;
 import org.entcore.common.http.response.DefaultResponseHandler;
 import org.entcore.common.mongodb.MongoDbControllerHelper;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import fr.wseduc.rs.*;
 import fr.wseduc.security.ActionType;
@@ -54,10 +54,10 @@ public class XitiController extends MongoDbControllerHelper {
 			public void handle(Either<String, JsonObject> event) {
 				if (event.isRight()) {
 					Renders.renderJson(request,
-							event.right().getValue().putBoolean("active", Boolean.valueOf(container.config().getString("active", "false"))), 200);
+							event.right().getValue().put("active", Boolean.valueOf(config.getString("active", "false"))), 200);
 				} else {
 					JsonObject error = new JsonObject()
-							.putString("error", event.left().getValue());
+							.put("error", event.left().getValue());
 					Renders.renderJson(request, error, 400);
 				}
 			}
