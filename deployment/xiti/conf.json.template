@@ -6,6 +6,7 @@
     "app-name" : "Xiti",
 	"app-address" : "/xiti",
 	"app-icon" : "Xiti-large",
+    "app-type" : "SYSTEM",
     "host": "${host}",
     "ssl" : $ssl,
     "auto-redeploy": false,
