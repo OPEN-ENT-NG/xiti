@@ -34,10 +34,19 @@
 
 					<h2 class="reduce-block-eight"><i18n>xiti.structure.parameters</i18n></h2>
 					<div class=" reduce-block-eight five">
-						<label class=""><i18n>Saisie en masse : </i18n></label>
+						<label class=""><i18n>xiti.mass.capture</i18n> : </label>
 						<input class="three" maxlength="3" ng-model="inputCode" i18n-placeholder="code"/>
 						<input class="five" type="number" ng-model="inputCollectiviteId" min="0" i18n-placeholder="xiti.id.collectivite"/>
-						<button class="right-magnet" ng-click="putcollectiviteIdByUAI(inputCode, inputCollectiviteId)">Valider</button>
+						<button class="right-magnet" ng-click="putcollectiviteIdByUAI(inputCode, inputCollectiviteId)"><i18n>xiti.validate</i18n></button>
+					</div>
+					<div class=" reduce-block-eight seven" ng-if="tenants.data.length > 0">
+						<label class=""><i18n>xiti.project.variables</i18n> : </label>
+						<select ng-model="tenantId">
+							<option ng-repeat="tenant in tenants.data" value="[[tenant.id]]">[[ tenant.name ]]</option>
+						</select>
+						<input class="three" type="number" ng-model="inputProjetId" i18n-placeholder="xiti.id.projet"/>
+						<input class="five" type="number" ng-model="inputPlateformeId" i18n-placeholder="xiti.id.plateforme"/>
+						<button class="right-magnet" ng-disabled="!tenantId" ng-click="putProjetAndPlateformeIdByTenant(tenantId, inputProjetId, inputPlateformeId)"><i18n>xiti.validate</i18n></button>
 					</div>
 					<div class="reduce-block-eight" >
 						[[initNewStructures()]]
@@ -59,6 +68,12 @@
 								<th  >
 									<label><i18n>xiti.id.collectivite</i18n></label>
 								</th>
+								<th  >
+									<label><i18n>xiti.id.projet</i18n></label>
+								</th>
+								<th  >
+									<label><i18n>xiti.id.plateforme</i18n></label>
+								</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -78,6 +93,22 @@
 									<input class="" type="number" ng-model="conf.structureMap[structure.id].collectiviteId"
 										   min="0"
 										   ng-blur="conf.upsertStructure(structure.id)"/>
+								</td>
+								<td align="left">
+									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-value="conf.ID_PROJET"
+										   min="0"
+										   ng-blur="conf.upsertStructure(structure.id)" disabled="disabled" />
+									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-model="conf.structureMap[structure.id].projetId"
+										   min="0"
+										   ng-blur="conf.upsertStructure(structure.id)" />
+								</td>
+								<td align="left">
+									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-value="conf.ID_PLATEFORME"
+										   min="0"
+										   ng-blur="conf.upsertStructure(structure.id)" disabled="disabled" />
+									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-model="conf.structureMap[structure.id].plateformeId"
+										   min="0"
+										   ng-blur="conf.upsertStructure(structure.id)" />
 								</td>
 							</tr>
 							</tbody>

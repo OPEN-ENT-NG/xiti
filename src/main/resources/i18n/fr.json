@@ -6,5 +6,8 @@
 	"xiti.id.collectivite": "Identifiant de la collectivité",
 	"xiti.id.plateforme": "Identifiant de la plateforme",
 	"xiti.id.projet": "Identifiant du projet",
-	"xiti.id.etab": "Identifiant de l'établissement"
+	"xiti.id.etab": "Identifiant de l'établissement",
+	"xiti.mass.capture": "Saisie en masse",
+	"xiti.project.variables": "Variables projets",
+	"xiti.validate": "Valider"
 }

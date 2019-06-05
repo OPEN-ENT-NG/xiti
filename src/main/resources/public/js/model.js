@@ -33,13 +33,39 @@ XitiConf.prototype.upsertStructureByUAI = function(data){
 
 function Structure(){}
 
+function Tenant(){}
+
+Tenant.prototype.getAll = function(callback){
+	var that = this
+	http().get('/directory/tenant/all').done(function(data){
+		that.updateData(data)
+	})
+}
+
+Tenant.prototype.isStructureAttachedToTenant = function(structureId){
+	var res = this.data.some(function(tenant){
+		return tenant.structures.some(function(structure){
+			return structure.id === structureId;
+		})
+	})
+	return res;
+}
+
+Tenant.prototype.getTenantById = function(tenantId){
+	var res = this.data.find(function(tenant){
+		return tenant.id === tenantId;
+	})
+	return res;
+}
+
 ///////////////////////
 ///   MODEL.BUILD   ///
 
 model.build = function(){
-	model.makeModels([XitiConf, Structure])
+	model.makeModels([XitiConf, Structure, Tenant])
 
 	this.conf = new XitiConf()
+	this.tenants = new Tenant()
 	this.collection(Structure, {
         sync: function(hook){
             var that = this
