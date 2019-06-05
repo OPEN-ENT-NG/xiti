@@ -42,7 +42,7 @@
 					<div class=" reduce-block-eight seven" ng-if="tenants.data.length > 0">
 						<label class=""><i18n>xiti.project.variables</i18n> : </label>
 						<select ng-model="tenantId">
-							<option ng-repeat="tenant in tenants.data" value="[[tenant.id]]">[[ tenant.name ]]</option>
+							<option ng-repeat="tenant in tenants.data | orderBy: 'name'" value="[[tenant.id]]">[[ tenant.name ]]</option>
 						</select>
 						<input class="three" type="number" ng-model="inputProjetId" i18n-placeholder="xiti.id.projet"/>
 						<input class="three" type="number" ng-model="inputPlateformeId" i18n-placeholder="xiti.id.plateforme"/>
