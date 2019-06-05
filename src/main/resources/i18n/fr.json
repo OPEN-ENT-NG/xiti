@@ -1,6 +1,6 @@
 {
-	"xiti.title" : "Xiti",
-	"xiti.admin.header": "Paramétrage de l'application Xiti",
+	"xiti.title" : "XiTi",
+	"xiti.admin.header": "Paramétrage de l'application XiTi",
 	"xiti.plateforme.parameters": "Variables de plateforme",
 	"xiti.structure.parameters": "Variables de structure",
 	"xiti.id.collectivite": "Identifiant de la collectivité",
@@ -9,5 +9,7 @@
 	"xiti.id.etab": "Identifiant de l'établissement",
 	"xiti.mass.capture": "Saisie en masse",
 	"xiti.project.variables": "Variables projets",
-	"xiti.validate": "Valider"
+	"xiti.validate": "Valider",
+	"xiti.masscapture.code": "Département (075, 971, ...)",
+	"xiti.structure.name": "Nom de la structure"
 }
