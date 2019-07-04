@@ -19,6 +19,7 @@
 
 package fr.wseduc.xiti;
 
+import fr.wseduc.xiti.events.XitiRepositoryEvents;
 import org.entcore.common.http.BaseServer;
 
 import fr.wseduc.xiti.controllers.XitiController;
@@ -32,6 +33,7 @@ public class Xiti extends BaseServer {
 	public void start() throws Exception {
 		super.start();
 		addController(new XitiController(collection));
+		setRepositoryEvents(new XitiRepositoryEvents(vertx, collection));
 	}
 
 }
