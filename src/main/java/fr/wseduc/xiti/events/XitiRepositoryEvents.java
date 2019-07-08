@@ -58,6 +58,9 @@ public class XitiRepositoryEvents implements RepositoryEvents {
                 updates.put("structureMap." + structures.getString(j) + ".projetId", (String)null);
             }
         }
+        if (updates.isEmpty()) {
+            return;
+        }
         JsonObject data = new JsonObject().put("$set", updates);
         mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(new Handler<Either<String, JsonObject>>() {
             @Override
