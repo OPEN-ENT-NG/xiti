@@ -1,5 +1,5 @@
 {
-  "name": "fr.wseduc~xiti~1.9-SNAPSHOT",
+  "name": "fr.wseduc~xiti~1.9.1",
   "config": {
     "main" : "fr.wseduc.xiti.Xiti",
     "port" : 8049,
