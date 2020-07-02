@@ -41,10 +41,10 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 	}
 
 	public void upsertPlatform(JsonObject data, Handler<Either<String, JsonObject>> handler){
-		JsonObject criteria = new JsonObject().put("config", true);
-		data.put("config", true);
+		final JsonObject criteria = new JsonObject().put("config", true);
+		final JsonObject operation = new JsonObject().put("$set",data);
 
-		mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(handler));
+		mongo.update(collection, criteria, operation, true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
 	public void upsertStructure(String structureId, JsonObject structure, Handler<Either<String, JsonObject>> handler) {
