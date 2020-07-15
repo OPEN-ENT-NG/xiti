@@ -23,11 +23,13 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import org.entcore.common.user.UserInfos;
+
 import fr.wseduc.webutils.Either;
 
 public interface XitiService {
 
-	public void getConfig(Handler<Either<String, JsonObject>> handler);
+	public void getConfig(UserInfos user, Handler<Either<String, JsonObject>> handler);
 
 	public void upsertPlatform(JsonObject data, Handler<Either<String, JsonObject>> handler);
 	public void upsertStructure(String structureId, JsonObject structure, Handler<Either<String, JsonObject>> handler);

@@ -22,6 +22,8 @@ package fr.wseduc.xiti.controllers;
 import org.entcore.common.http.filter.ResourceFilter;
 import org.entcore.common.http.response.DefaultResponseHandler;
 import org.entcore.common.mongodb.MongoDbControllerHelper;
+import org.entcore.common.user.UserUtils;
+
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonArray;
@@ -49,18 +51,20 @@ public class XitiController extends MongoDbControllerHelper {
 	@Get("/config")
 	@SecuredAction(type = ActionType.AUTHENTICATED, value = "")
 	public void getConfig(final HttpServerRequest request){
-		service.getConfig(new Handler<Either<String, JsonObject>>() {
-			@Override
-			public void handle(Either<String, JsonObject> event) {
-				if (event.isRight()) {
-					Renders.renderJson(request,
-							event.right().getValue().put("active", Boolean.valueOf(config.getString("active", "false"))), 200);
-				} else {
-					JsonObject error = new JsonObject()
-							.put("error", event.left().getValue());
-					Renders.renderJson(request, error, 400);
+		UserUtils.getUserInfos(eb, request, resUser->{
+			service.getConfig(resUser, new Handler<Either<String, JsonObject>>() {
+				@Override
+				public void handle(Either<String, JsonObject> event) {
+					if (event.isRight()) {
+						Renders.renderJson(request,
+								event.right().getValue().put("active", Boolean.valueOf(config.getString("active", "false"))), 200);
+					} else {
+						JsonObject error = new JsonObject()
+								.put("error", event.left().getValue());
+						Renders.renderJson(request, error, 400);
+					}
 				}
-			}
+			});
 		});
 	}
 

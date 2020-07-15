@@ -19,18 +19,26 @@
 
 package fr.wseduc.xiti.services.impl;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.entcore.common.mongodb.MongoDbResult;
 import org.entcore.common.service.impl.MongoDbCrudService;
+import org.entcore.common.user.DefaultFunctions;
+import org.entcore.common.user.UserInfos;
+
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import fr.wseduc.mongodb.MongoDb;
 import fr.wseduc.webutils.Either;
 import fr.wseduc.xiti.services.XitiService;
 
 public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiService {
-
+	private Logger log = LoggerFactory.getLogger(XitiServiceMongoImpl.class);
 	private final String collection;
 	private final MongoDb mongo;
 
@@ -73,10 +81,32 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 		mongo.update(collection, criteria, new JsonObject().put("$set", input), true, false, MongoDbResult.validActionResultHandler(handler));
 	}
 
-	public void getConfig(Handler<Either<String, JsonObject>> handler) {
+	public void getConfig(UserInfos user,Handler<Either<String, JsonObject>> handler) {
 		JsonObject criteria = new JsonObject().put("config", true);
 
-		mongo.findOne(collection, criteria, MongoDbResult.validResultHandler(handler));
+		mongo.findOne(collection, criteria, MongoDbResult.validResultHandler(res->{
+			if(res.isRight()){
+				final JsonObject config = res.right().getValue();
+				Map<String, UserInfos.Function> functions = user.getFunctions();
+				if(functions.containsKey(DefaultFunctions.SUPER_ADMIN)){
+					handler.handle(new Either.Right<String,JsonObject>(config));
+				}else{
+					final JsonObject structureMap = config.getJsonObject("structureMap", new JsonObject());
+					final Set<String> toRemove = new HashSet<String>();
+					for(final String structId : structureMap.fieldNames()){
+						if(!user.getStructures().contains(structId)){
+							toRemove.add(structId);
+						}
+					}
+					for(final String key : toRemove){
+						structureMap.remove(key);
+					}
+					handler.handle(new Either.Right<String,JsonObject>(config));
+				}
+			}else{
+				handler.handle(res);
+			}
+		}));
 	}
 
 }
