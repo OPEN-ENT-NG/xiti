@@ -80,7 +80,7 @@ public class XitiRepositoryEvents implements RepositoryEvents {
     public void deleteUsers(JsonArray groups) {}
 
     @Override
-    public void exportResources(JsonArray resourcesIds, String exportId, String userId, JsonArray groups, String exportPath,
-                                String locale, String host, Handler<Boolean> handler) {}
+    public void exportResources(JsonArray resourcesIds, boolean exportDocuments, boolean exportSharedResources, String exportId, String userId,
+                                JsonArray groups, String exportPath, String locale, String host, Handler<Boolean> handler) {}
 
 }
