@@ -84,16 +84,12 @@ let xiti = async function(locationPath = window.location.pathname) {
             if(!data.active)
                 return false;
 
-            xitiConf.ID_COLLECTIVITE = data.ID_COLLECTIVITE
-            xitiConf.ID_PLATEFORME = data.structureMap[model.me.structures[0]].plateformeId ?
-                data.structureMap[model.me.structures[0]].plateformeId : data.ID_PLATEFORME;
-            xitiConf.ID_PROJET = data.structureMap[model.me.structures[0]].projetId ?
-                data.structureMap[model.me.structures[0]].projetId : data.ID_PROJET;
+            xitiConf.ID_COLLECTIVITE = data.ID_COLLECTIVITE;
+            let struc = data.structureMap[model.me.structures[0]];
+            xitiConf.ID_PLATEFORME = struc && struc.plateformeId ? struc.plateformeId : data.ID_PLATEFORME;
+            xitiConf.ID_PROJET = struc && struc.projetId ? struc.projetId : data.ID_PROJET;
 
-            xitiConf.ID_ETAB =
-                model.me.structures.length > 0 ?
-                data.structureMap[model.me.structures[0]] :
-                0;
+            xitiConf.ID_ETAB = struc || 0;
             return true;
     }
 

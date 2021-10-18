@@ -7,7 +7,6 @@ export let Xiti = {
         this.get = async function() {
             let response = await http.get('/xiti/config');
             this.updateData(response.data);
-            this.structureMap = {};
         }
     
         this.upsertPlatform = async function() {
