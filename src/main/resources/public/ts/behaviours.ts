@@ -1,3 +1,5 @@
+import { Behaviours } from 'entcore';
+
 Behaviours.register('xiti', {
 	rights: {},
 	dependencies: {},

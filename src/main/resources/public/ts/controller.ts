@@ -1,9 +1,6 @@
-/**
-	Wrapper controller
-	------------------
-	Main controller.
-**/
-function XitiController($scope, $rootScope, model, template, route, date, lang){
+import { ng } from 'entcore'
+
+export let xitiController = ng.controller('XitiController', ['$scope', 'model', ($scope, model) => {
 	$scope.conf = model.conf
 	$scope.structures = model.structures
 	$scope.tenants = model.tenants
@@ -60,4 +57,4 @@ function XitiController($scope, $rootScope, model, template, route, date, lang){
 
 	$scope.conf.get();
 	$scope.tenants.getAll();
-}
+}]);
