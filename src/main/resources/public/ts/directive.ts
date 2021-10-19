@@ -1,10 +1,80 @@
-import { skin, model, appPrefix } from 'entcore';
+import { model, appPrefix } from 'entcore';
+import { build as buildModel } from './model'
 import http from "axios";
 
 let windowAsAny = window as any;
 
-let xiti = async function(locationPath = window.location.pathname) {
+declare var ATInternet: any;
 
+let xiti = async function(locationPath = window.location.pathname) {
+    console.log("Xiti directive");
+
+    ///////////////////////////////////////////////////////////////
+    // NEW IMPLEM
+    let scriptPath = '/xiti/public/js/lib/smarttag_ENT.js';
+    let response = await http.get(scriptPath);
+    if (response.status != 200) return;
+    eval(response.data);
+
+    model.build = buildModel;
+    model.build();
+
+    let xitiConf = (model as any).conf;
+    await xitiConf.get();
+
+    let structure;
+    for (let struc of model.me.structures) {
+        let s = xitiConf.data.structureMap[struc];
+        if (s.collectiviteId && s.id) {
+            structure = s;
+            break;
+        }
+    }
+    if (!structure) return;
+
+    let appConf = await http.get('/' + (appPrefix === 'userbook' ? 'directory' : appPrefix) + '/conf/public');
+    let data = appConf.data;
+
+    let pseudonymization = function(stringId){
+        let buffer = "";
+        for(let i = 0; i < stringId.length; i++){
+            buffer += stringId.charCodeAt(i);
+        }
+        return buffer;
+    }
+
+    let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
+
+    ATTag.setProps({
+        "SERVICE":"SERVICE",
+        "TYPE":"NATIF",
+        "OUTIL":"OUTIL",
+        "UAI":"UAI",
+        "PROJET":"PROJET",
+        "EXPLOITANT":"EXPLOITANT",
+        "PLATEFORME":"PLATEFORME",
+        "PROFIL":"PROFIL ",
+    }, true);
+
+    ATTag.identifiedVisitor.set({
+        id: "ID_PERSO",
+        category: "PROFIL"
+    });
+
+    ATTag.page.set({
+        name:"NOM_PAGE",
+        chapter1:'CHAP1',
+        chapter2:'CHAP2',
+        chapter3:'CHAP3',
+        level2:"UAI",
+    });
+
+    //ATTag.dispatch();
+
+    ///////////////////////////////////////////////////////////////
+    // OLD IMPLEM
+
+    /*
     //Xiti script path
     let scriptPath = skin.basePath + 'js/xtfirst_ENT.js';
     //let scriptPath = '/xiti/public/js/lib/smarttag_ENT.js';
@@ -171,7 +241,7 @@ let xiti = async function(locationPath = window.location.pathname) {
         await getProfileInfos();
         await getAppsInfos();
         await loadScript();
-    }
+    }*/
 }
 
 windowAsAny.xiti = xiti;
