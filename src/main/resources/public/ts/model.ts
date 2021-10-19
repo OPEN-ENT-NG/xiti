@@ -4,6 +4,7 @@ import http from "axios";
 export let Xiti = {
 
 	XitiConf: function(){
+
         this.get = async function() {
             let response = await http.get('/xiti/config');
             this.updateData(response.data);
@@ -11,6 +12,8 @@ export let Xiti = {
     
         this.upsertPlatform = async function() {
             let copyCat = JSON.parse(JSON.stringify(this));
+            if (copyCat.ID_PLATEFORME) copyCat.ID_PLATEFORME = Number(copyCat.ID_PLATEFORME);
+            if (copyCat.ID_PROJET) copyCat.ID_PROJET = Number(copyCat.ID_PROJET);
             delete(copyCat.structureMap)
             delete(copyCat._id);
             await http.put('/xiti/platform', copyCat);
