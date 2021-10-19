@@ -43,6 +43,23 @@ let xiti = async function(locationPath = window.location.pathname) {
         return buffer;
     }
 
+    // ID_PERSO
+    const ID_PERSO = pseudonymization(model.me.userId);
+    
+    // PROFIL
+    let profileMap = {
+        "Student": "ELEVE",
+        "Teacher": "ENSEIGNANT",
+        "Relative": "PARENT",
+        "Personnel": "ADMIN_VIE_SCOL_TECH",
+        "Guest": "AUTRE"
+    }
+    
+    let profile = "";
+    if (model.me.profiles && model.me.profiles.length > 0) {
+        profile = profileMap[model.me.profiles[0]];
+    }
+
     let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
 
     ATTag.setProps({
@@ -57,8 +74,8 @@ let xiti = async function(locationPath = window.location.pathname) {
     }, true);
 
     ATTag.identifiedVisitor.set({
-        id: "ID_PERSO",
-        category: "PROFIL"
+        id: ID_PERSO,
+        category: profile
     });
 
     ATTag.page.set({
