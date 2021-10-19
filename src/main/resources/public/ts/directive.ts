@@ -64,11 +64,14 @@ let xiti = async function(locationPath = window.location.pathname) {
         "Personnel": "ADMIN_VIE_SCOL_TECH",
         "Guest": "AUTRE"
     }
-    
+
     let profile = "";
     if (model.me.profiles && model.me.profiles.length > 0) {
         profile = profileMap[model.me.profiles[0]];
     }
+
+    // NOM_PAGE
+    const NOM_PAGE = appPrefix === 'userbook' ? 'directory' : appPrefix;
 
     let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
 
@@ -89,10 +92,10 @@ let xiti = async function(locationPath = window.location.pathname) {
     });
 
     ATTag.page.set({
-        name:"NOM_PAGE",
-        chapter1:'CHAP1',
-        chapter2:'CHAP2',
-        chapter3:'CHAP3',
+        name: NOM_PAGE,
+        chapter1:'',
+        chapter2:'',
+        chapter3:'',
         level2:"UAI",
     });
 
