@@ -50,8 +50,12 @@ export let xitiController = ng.controller('XitiController', ['$scope', 'model', 
 
 	$scope.initNewStructures = function () {
 		$scope.structures.forEach((structure) => {
-			if(!$scope.conf.structureMap[structure.id])
+			if(!$scope.conf.structureMap[structure.id]) {
                 $scope.conf.structureMap[structure.id] = {};
+			}
+			if (!$scope.conf.structureMap[structure.id].UAI) {
+				$scope.conf.structureMap[structure.id].UAI = structure.UAI;
+			}
 		})
     }
 

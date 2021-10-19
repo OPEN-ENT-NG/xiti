@@ -81,8 +81,8 @@
 									<label>[[structure.name]]</label>
 								</td>
 								<td align="left">
-									<label ng-if="structure.UAI">[[structure.UAI]]</label>
-									<label ng-if="!structure.UAI">N/A</label>
+									<input class="" type="text" ng-model="conf.structureMap[structure.id].UAI"
+										   ng-blur="conf.upsertStructure(structure.id)"/>
 								</td>
 								<td align="left">
 									<input class="" type="number" ng-model="conf.structureMap[structure.id].id"

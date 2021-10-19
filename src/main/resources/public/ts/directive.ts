@@ -25,7 +25,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     let structure;
     for (let struc of model.me.structures) {
         let s = xitiConf.data.structureMap[struc];
-        if (s && s.collectiviteId && s.id) {
+        if (s && s.collectiviteId && s.id && s.UAI) {
             structure = s;
             break;
         }
@@ -81,6 +81,9 @@ let xiti = async function(locationPath = window.location.pathname) {
     // NOM_PAGE
     const NOM_PAGE = appPrefix === 'userbook' ? 'directory' : appPrefix;
 
+    // UAI
+    const UAI = structure.UAI;
+
     let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
 
     ATTag.setProps({
@@ -101,10 +104,10 @@ let xiti = async function(locationPath = window.location.pathname) {
 
     ATTag.page.set({
         name: NOM_PAGE,
-        chapter1:'',
-        chapter2:'',
-        chapter3:'',
-        level2:"UAI",
+        chapter1: '',
+        chapter2: '',
+        chapter3: '',
+        level2: UAI,
     });
 
     //ATTag.dispatch();
