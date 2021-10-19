@@ -36,6 +36,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     if (appConf.status != 200) return;
     let appXitiConf = appConf.data.xiti;
 
+    // LIBELLE_SERVICE
     if (!appXitiConf.LIBELLE_SERVICE) return;
     let SERVICE = appXitiConf.LIBELLE_SERVICE.default || null;
     for(let prop in appXitiConf.LIBELLE_SERVICE){
@@ -43,6 +44,13 @@ let xiti = async function(locationPath = window.location.pathname) {
             SERVICE = appXitiConf.LIBELLE_SERVICE[prop];
             break;
         }
+    }
+
+    // TYPE & OUTIL
+    let TYPE = 'NATIF', OUTIL = "";
+    if (appXitiConf.OUTIL) {
+        OUTIL = appXitiConf.OUTIL;
+        TYPE = 'TIERS';
     }
 
     let pseudonymization = function(stringId){
@@ -77,8 +85,8 @@ let xiti = async function(locationPath = window.location.pathname) {
 
     ATTag.setProps({
         "SERVICE": SERVICE,
-        "TYPE":"NATIF",
-        "OUTIL":"OUTIL",
+        "TYPE": TYPE,
+        "OUTIL": OUTIL,
         "UAI":"UAI",
         "PROJET":"PROJET",
         "EXPLOITANT":"EXPLOITANT",
