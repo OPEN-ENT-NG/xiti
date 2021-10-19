@@ -25,7 +25,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     let structure;
     for (let struc of model.me.structures) {
         let s = xitiConf.data.structureMap[struc];
-        if (s.collectiviteId && s.id) {
+        if (s && s.collectiviteId && s.id) {
             structure = s;
             break;
         }
@@ -33,7 +33,17 @@ let xiti = async function(locationPath = window.location.pathname) {
     if (!structure) return;
 
     let appConf = await http.get('/' + (appPrefix === 'userbook' ? 'directory' : appPrefix) + '/conf/public');
-    let data = appConf.data;
+    if (appConf.status != 200) return;
+    let appXitiConf = appConf.data.xiti;
+
+    if (!appXitiConf.LIBELLE_SERVICE) return;
+    let SERVICE = appXitiConf.LIBELLE_SERVICE.default || null;
+    for(let prop in appXitiConf.LIBELLE_SERVICE){
+        if(prop !== 'default' && locationPath.indexOf(prop) >= 0){
+            SERVICE = appXitiConf.LIBELLE_SERVICE[prop];
+            break;
+        }
+    }
 
     let pseudonymization = function(stringId){
         let buffer = "";
@@ -63,7 +73,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
 
     ATTag.setProps({
-        "SERVICE":"SERVICE",
+        "SERVICE": SERVICE,
         "TYPE":"NATIF",
         "OUTIL":"OUTIL",
         "UAI":"UAI",
