@@ -54,11 +54,14 @@ let xiti = async function(locationPath = window.location.pathname) {
     }
 
     // PROJET
-    let PROJET = xitiConf.data.ID_PROJET || "";
+    let PROJET = xitiConf.data.ID_PROJET;
     if (structure.projetId) PROJET = structure.projetId;
 
+    // EXPLOITANT
+    let EXPLOITANT = xitiConf.data.ID_EXPLOITANT;
+
     // PLATFORME
-    let PLATFORME = xitiConf.data.ID_PLATEFORME || "";
+    let PLATFORME = xitiConf.data.ID_PLATEFORME;
     if (structure.plateformeId) PLATFORME = structure.plateformeId;
 
     let pseudonymization = function(stringId){
@@ -90,7 +93,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     const NOM_PAGE = appPrefix === 'userbook' ? 'directory' : appPrefix;
 
     // UAI
-    const UAI = structure.UAI;
+    const UAI = structure.UAI || "";
 
     let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
 
@@ -100,7 +103,7 @@ let xiti = async function(locationPath = window.location.pathname) {
         "OUTIL": OUTIL,
         "UAI": UAI,
         "PROJET": PROJET,
-        "EXPLOITANT":"EXPLOITANT",
+        "EXPLOITANT": EXPLOITANT,
         "PLATEFORME": PLATFORME,
         "PROFIL": PROFILE,
     }, true);
