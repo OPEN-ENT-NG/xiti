@@ -57,15 +57,9 @@
 							<tr>
 								<th  >
 									<label><i18n>xiti.structure.name</i18n></label>
-
 								</th>
 								<th >
 									<label><i18n>UAI</i18n></label>
-
-								</th>
-								<th >
-									<label><i18n>xiti.id.etab</i18n></label>
-
 								</th>
 								<th  >
 									<label><i18n>xiti.id.collectivite</i18n></label>
@@ -90,10 +84,6 @@
 									<input class="" type="text" ng-model="conf.structureMap[structure.id].UAI"
 										   ng-blur="upsertStructure(structure.id)"/>
 								</td>
-								<td align="left">
-									<input class="" type="number" ng-model="conf.structureMap[structure.id].id"
-										   min="0"
-										   ng-blur="upsertStructure(structure.id)"/></td>
 								<td align="left">
 									<input class="" type="number" ng-model="conf.structureMap[structure.id].collectiviteId"
 										   min="0"
