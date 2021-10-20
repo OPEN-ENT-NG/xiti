@@ -8,6 +8,7 @@
 	"xiti.id.exploitant": "Identifiant de l'exploitant",
 	"xiti.id.projet": "Identifiant du projet",
 	"xiti.id.etab": "Identifiant de l'établissement",
+	"xiti.id.active": "Activation du marquage",
 	"xiti.mass.capture": "Saisie en masse",
 	"xiti.project.variables": "Variables projets",
 	"xiti.validate": "Valider",

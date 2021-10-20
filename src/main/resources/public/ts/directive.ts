@@ -24,12 +24,12 @@ let xiti = async function(locationPath = window.location.pathname) {
     let structure;
     for (let struc of model.me.structures) {
         let s = xitiConf.data.structureMap[struc];
-        if (s && s.collectiviteId && s.id && s.UAI) {
+        if (s && s.collectiviteId && s.UAI) {
             structure = s;
             break;
         }
     }
-    if (!structure) return;
+    if (!structure || !structure.active) return;
 
     let appConf = await http.get('/' + (appPrefix === 'userbook' ? 'directory' : appPrefix) + '/conf/public');
     if (appConf.status != 200) return;
@@ -121,7 +121,7 @@ let xiti = async function(locationPath = window.location.pathname) {
         level2: UAI,
     });
 
-    //ATTag.dispatch();
+    ATTag.dispatch();
 
     ///////////////////////////////////////////////////////////////
     // OLD IMPLEM

@@ -1,6 +1,6 @@
 import { ng } from 'entcore'
 
-export let xitiController = ng.controller('XitiController', ['$scope', 'model', ($scope, model) => {
+export let xitiController = ng.controller('XitiController', ['$scope', '$timeout', 'model', ($scope, $timeout, model) => {
 	$scope.conf = model.conf
 	$scope.structures = model.structures
 	$scope.tenants = model.tenants
@@ -58,6 +58,12 @@ export let xitiController = ng.controller('XitiController', ['$scope', 'model', 
 			}
 		})
     }
+
+	$scope.upsertStructure = function (structureId) {
+		$timeout(function () {
+			$scope.conf.upsertStructure(structureId);
+		});
+	}
 
 	$scope.conf.get();
 	$scope.tenants.getAll();

@@ -76,6 +76,9 @@
 								<th  >
 									<label><i18n>xiti.id.plateforme</i18n></label>
 								</th>
+								<th  >
+									<label><i18n>xiti.id.active</i18n></label>
+								</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -85,28 +88,32 @@
 								</td>
 								<td align="left">
 									<input class="" type="text" ng-model="conf.structureMap[structure.id].UAI"
-										   ng-blur="conf.upsertStructure(structure.id)"/>
+										   ng-blur="upsertStructure(structure.id)"/>
 								</td>
 								<td align="left">
 									<input class="" type="number" ng-model="conf.structureMap[structure.id].id"
 										   min="0"
-										   ng-blur="conf.upsertStructure(structure.id)"/></td>
+										   ng-blur="upsertStructure(structure.id)"/></td>
 								<td align="left">
 									<input class="" type="number" ng-model="conf.structureMap[structure.id].collectiviteId"
 										   min="0"
-										   ng-blur="conf.upsertStructure(structure.id)"/>
+										   ng-blur="upsertStructure(structure.id)"/>
 								</td>
 								<td align="left">
 									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-value="conf.ID_PROJET"
-										   ng-blur="conf.upsertStructure(structure.id)" disabled="disabled" />
+										   ng-blur="upsertStructure(structure.id)" disabled="disabled" />
 									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-model="conf.structureMap[structure.id].projetId"
-										   ng-blur="conf.upsertStructure(structure.id)" />
+										   ng-blur="upsertStructure(structure.id)" />
 								</td>
 								<td align="left">
 									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-value="conf.ID_PLATEFORME"
-										   ng-blur="conf.upsertStructure(structure.id)" disabled="disabled" />
+										   ng-blur="upsertStructure(structure.id)" disabled="disabled" />
 									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-model="conf.structureMap[structure.id].plateformeId"
-										   ng-blur="conf.upsertStructure(structure.id)" />
+										   ng-blur="upsertStructure(structure.id)" />
+								</td>
+								<td align="left">
+									<input class="" type="checkbox" ng-model="conf.structureMap[structure.id].active"
+										   ng-click="upsertStructure(structure.id)"/>
 								</td>
 							</tr>
 							</tbody>

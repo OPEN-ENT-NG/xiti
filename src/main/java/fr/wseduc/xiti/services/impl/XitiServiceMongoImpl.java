@@ -63,7 +63,8 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 				.put("collectiviteId",structure.getLong("collectiviteId"))
 				.put("plateformeId", structure.getLong("plateformeId"))
 				.put("projetId", structure.getLong("projetId"))
-				.put("UAI", structure.getString("UAI"))));
+				.put("UAI", structure.getString("UAI"))
+				.put("active", structure.getBoolean("active", false))));
 
 		mongo.update(collection, criteria, data, true, false, MongoDbResult.validActionResultHandler(handler));
 	}
