@@ -20,13 +20,13 @@
 					<h2 class="reduce-block-eight"><i18n>xiti.plateforme.parameters</i18n></h2>
 					<div class="row">
 						<label class="five cell"><i18n>xiti.id.projet</i18n></label>
-						<input class="five cell" type="number" ng-model="conf.ID_PROJET"
+						<input class="five cell" type="text" ng-model="conf.ID_PROJET"
 							min="0"
 							complete-change="conf.upsertPlatform()"/>
 					</div>
 					<div class="row">
 						<label class="five cell"><i18n>xiti.id.plateforme</i18n></label>
-						<input class="five cell" type="number" ng-model="conf.ID_PLATEFORME"
+						<input class="five cell" type="text" ng-model="conf.ID_PLATEFORME"
 							min="0"
 							complete-change="conf.upsertPlatform()"/>
 					</div>
@@ -94,18 +94,18 @@
 										   ng-blur="conf.upsertStructure(structure.id)"/>
 								</td>
 								<td align="left">
-									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-value="conf.ID_PROJET"
+									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-value="conf.ID_PROJET"
 										   min="0"
 										   ng-blur="conf.upsertStructure(structure.id)" disabled="disabled" />
-									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-model="conf.structureMap[structure.id].projetId"
+									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-model="conf.structureMap[structure.id].projetId"
 										   min="0"
 										   ng-blur="conf.upsertStructure(structure.id)" />
 								</td>
 								<td align="left">
-									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-value="conf.ID_PLATEFORME"
+									<input ng-if="!tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-value="conf.ID_PLATEFORME"
 										   min="0"
 										   ng-blur="conf.upsertStructure(structure.id)" disabled="disabled" />
-									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="number" ng-model="conf.structureMap[structure.id].plateformeId"
+									<input ng-if="tenants.isStructureAttachedToTenant(structure.id)" class="" type="text" ng-model="conf.structureMap[structure.id].plateformeId"
 										   min="0"
 										   ng-blur="conf.upsertStructure(structure.id)" />
 								</td>

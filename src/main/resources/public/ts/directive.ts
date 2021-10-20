@@ -1,9 +1,9 @@
-import { model, appPrefix } from 'entcore';
-import { build as buildModel } from './model'
+import { model as Model, appPrefix } from 'entcore';
 import http from "axios";
 
 let windowAsAny = window as any;
 
+declare var model: any;
 declare var ATInternet: any;
 
 let xiti = async function(locationPath = window.location.pathname) {
@@ -16,11 +16,10 @@ let xiti = async function(locationPath = window.location.pathname) {
     if (response.status != 200) return;
     eval(response.data);
 
-    model.build = buildModel;
-    model.build();
+    if (Model) model = Model; // Trick to make it work in JS modules
 
-    let xitiConf = (model as any).conf;
-    await xitiConf.get();
+    let xitiConf = await http.get('/xiti/config');
+    if (xitiConf.status != 200) return;
 
     let structure;
     for (let struc of model.me.structures) {
@@ -35,6 +34,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     let appConf = await http.get('/' + (appPrefix === 'userbook' ? 'directory' : appPrefix) + '/conf/public');
     if (appConf.status != 200) return;
     let appXitiConf = appConf.data.xiti;
+    if (!appXitiConf) return;
 
     // LIBELLE_SERVICE
     if (!appXitiConf.LIBELLE_SERVICE) return;
@@ -52,6 +52,14 @@ let xiti = async function(locationPath = window.location.pathname) {
         OUTIL = appXitiConf.OUTIL;
         TYPE = 'TIERS';
     }
+
+    // PROJET
+    let PROJET = xitiConf.data.ID_PROJET || "";
+    if (structure.projetId) PROJET = structure.projetId;
+
+    // PLATFORME
+    let PLATFORME = xitiConf.data.ID_PLATEFORME || "";
+    if (structure.plateformeId) PLATFORME = structure.plateformeId;
 
     let pseudonymization = function(stringId){
         let buffer = "";
@@ -73,9 +81,9 @@ let xiti = async function(locationPath = window.location.pathname) {
         "Guest": "AUTRE"
     }
 
-    let profile = "";
+    let PROFILE = "";
     if (model.me.profiles && model.me.profiles.length > 0) {
-        profile = profileMap[model.me.profiles[0]];
+        PROFILE = profileMap[model.me.profiles[0]];
     }
 
     // NOM_PAGE
@@ -90,16 +98,16 @@ let xiti = async function(locationPath = window.location.pathname) {
         "SERVICE": SERVICE,
         "TYPE": TYPE,
         "OUTIL": OUTIL,
-        "UAI":"UAI",
-        "PROJET":"PROJET",
+        "UAI": UAI,
+        "PROJET": PROJET,
         "EXPLOITANT":"EXPLOITANT",
-        "PLATEFORME":"PLATEFORME",
-        "PROFIL":"PROFIL ",
+        "PLATEFORME": PLATFORME,
+        "PROFIL": PROFILE,
     }, true);
 
     ATTag.identifiedVisitor.set({
         id: ID_PERSO,
-        category: profile
+        category: PROFILE
     });
 
     ATTag.page.set({
