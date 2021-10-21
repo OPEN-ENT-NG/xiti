@@ -31,7 +31,7 @@ let xiti = async function(locationPath = window.location.pathname) {
     }
     if (!structure || !structure.active) return;
 
-    let appConf = await http.get('/' + (appPrefix === 'userbook' ? 'directory' : appPrefix) + '/conf/public');
+    let appConf = await http.get(`/${appPrefix}/conf/public`);
     if (appConf.status != 200) return;
     let appXitiConf = appConf.data.xiti;
     if (!appXitiConf) return;
