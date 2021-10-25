@@ -46,8 +46,8 @@
 						<select ng-model="tenantId">
 							<option ng-repeat="tenant in tenants.data | orderBy: 'name'" value="[[tenant.id]]">[[ tenant.name ]]</option>
 						</select>
-						<input class="three" type="number" ng-model="inputProjetId" i18n-placeholder="xiti.id.projet"/>
-						<input class="three" type="number" ng-model="inputPlateformeId" i18n-placeholder="xiti.id.plateforme"/>
+						<input class="three" type="text" ng-model="inputProjetId" i18n-placeholder="xiti.id.projet"/>
+						<input class="three" type="text" ng-model="inputPlateformeId" i18n-placeholder="xiti.id.plateforme"/>
 						<button class="right-magnet" ng-disabled="!tenantId" ng-click="putProjetAndPlateformeIdByTenant(tenantId, inputProjetId, inputPlateformeId)"><i18n>xiti.validate</i18n></button>
 					</div>
 					<div class="reduce-block-eight" >

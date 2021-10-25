@@ -11,22 +11,23 @@ export let xitiController = ng.controller('XitiController', ['$scope', '$timeout
 	}
 
 	$scope.putcollectiviteIdByUAI = function(uaiPrefix, collectiviteId){
+		let structures = [];
 		$scope.structures.all.forEach((structure) => {
-            var structures = [];
 			if(structure.UAI && structure.UAI.startsWith(uaiPrefix)){
                 $scope.conf.structureMap[structure.id].collectiviteId = collectiviteId;
                 structures.push({
                 	"structureId" : structure.id,
-					"id" : $scope.conf.structureMap[structure.id].id,
 					"collectiviteId" : $scope.conf.structureMap[structure.id].collectiviteId,
 					"projetId": $scope.conf.structureMap[structure.id].projetId,
-					"plateformeId": $scope.conf.structureMap[structure.id].plateformeId
-				})
+					"plateformeId": $scope.conf.structureMap[structure.id].plateformeId,
+					"UAI": $scope.conf.structureMap[structure.id].UAI,
+					"active": $scope.conf.structureMap[structure.id].active
+				});
 			}
-			if(structures.length > 0){
-				$scope.conf.upsertStructureByUAI(structures);
-			}
-		})
+		});
+		if(structures.length > 0){
+			$scope.conf.upsertStructureByUAI(structures);
+		}
 	}
 
 	$scope.putProjetAndPlateformeIdByTenant = function(tenantId, projetId, plateformeId){
@@ -39,10 +40,11 @@ export let xitiController = ng.controller('XitiController', ['$scope', '$timeout
 			$scope.conf.upsertStructureByUAI(structures.map(function(structure){
 				return {
 					"structureId": structure.id,
-					"id": $scope.conf.structureMap[structure.id].id,
 					"collectiviteId" : $scope.conf.structureMap[structure.id].collectiviteId,
 					"projetId": projetId,
-					"plateformeId": plateformeId
+					"plateformeId": plateformeId,
+					"UAI": $scope.conf.structureMap[structure.id].UAI,
+					"active": $scope.conf.structureMap[structure.id].active
 				};
 			}));
 		}

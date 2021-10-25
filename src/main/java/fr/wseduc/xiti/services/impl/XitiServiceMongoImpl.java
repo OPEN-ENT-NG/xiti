@@ -59,10 +59,9 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 		JsonObject criteria = new JsonObject().put("config", true);
 		JsonObject data = new JsonObject()
 			.put("$set", new JsonObject()
-				.put("structureMap."+structureId, new JsonObject().put("id",structure.getLong("id"))
-				.put("collectiviteId",structure.getLong("collectiviteId"))
-				.put("plateformeId", structure.getLong("plateformeId"))
-				.put("projetId", structure.getLong("projetId"))
+				.put("structureMap."+structureId, new JsonObject().put("collectiviteId",structure.getLong("collectiviteId"))
+				.put("plateformeId", structure.getString("plateformeId"))
+				.put("projetId", structure.getString("projetId"))
 				.put("UAI", structure.getString("UAI"))
 				.put("active", structure.getBoolean("active", false))));
 
@@ -74,11 +73,11 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 		JsonObject input = new JsonObject();
 		for(Object ob : array){
 			JsonObject j = (JsonObject) ob;
-			input.put("structureMap."+j.getString("structureId"),
-					new JsonObject().put("id",j.getLong("id"))
-					.put("collectiviteId",j.getLong("collectiviteId"))
-					.put("plateformeId", j.getLong("plateformeId"))
-					.put("projetId", j.getLong("projetId")));
+			input.put("structureMap."+j.getString("structureId"), new JsonObject().put("collectiviteId",j.getLong("collectiviteId"))
+					.put("plateformeId", j.getString("plateformeId"))
+					.put("projetId", j.getString("projetId"))
+					.put("UAI", j.getString("UAI"))
+					.put("active", j.getBoolean("active", false)));
 		}
 		mongo.update(collection, criteria, new JsonObject().put("$set", input), true, false, MongoDbResult.validActionResultHandler(handler));
 	}
