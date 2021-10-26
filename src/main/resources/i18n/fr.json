@@ -13,5 +13,6 @@
 	"xiti.project.variables": "Variables projets",
 	"xiti.validate": "Valider",
 	"xiti.masscapture.code": "Département (075, 971, ...)",
-	"xiti.structure.name": "Nom de la structure"
+	"xiti.structure.name": "Nom de la structure",
+	"xiti.structures.update.all": "Mettre à jour"
 }

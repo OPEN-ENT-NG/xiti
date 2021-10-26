@@ -10,6 +10,23 @@ export let xitiController = ng.controller('XitiController', ['$scope', '$timeout
 			action()
 	}
 
+	$scope.updateAllStructures = function(){
+		let structures = [];
+		$scope.structures.all.forEach((structure) => {
+			structures.push({
+				"structureId" : structure.id,
+				"collectiviteId" : $scope.conf.structureMap[structure.id].collectiviteId,
+				"projetId": $scope.conf.structureMap[structure.id].projetId,
+				"plateformeId": $scope.conf.structureMap[structure.id].plateformeId,
+				"UAI": $scope.conf.structureMap[structure.id].UAI,
+				"active": $scope.conf.structureMap[structure.id].active
+			});
+		});
+		if(structures.length > 0){
+			$scope.conf.upsertStructureByUAI(structures);
+		}
+	}
+
 	$scope.putcollectiviteIdByUAI = function(uaiPrefix, collectiviteId){
 		let structures = [];
 		$scope.structures.all.forEach((structure) => {
