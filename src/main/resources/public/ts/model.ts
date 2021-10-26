@@ -25,7 +25,7 @@ export let Xiti = {
     
         this.upsertStructureByUAI = async function(data) {
             let copyCat = JSON.parse(JSON.stringify(data));
-            await http.put('/xiti/structuresByUAI', copyCat);
+            return await http.put('/xiti/structuresByUAI', copyCat);
         }
     },
     

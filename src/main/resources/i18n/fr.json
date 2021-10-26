@@ -14,5 +14,7 @@
 	"xiti.validate": "Valider",
 	"xiti.masscapture.code": "Département (075, 971, ...)",
 	"xiti.structure.name": "Nom de la structure",
-	"xiti.structures.update.all": "Mettre à jour"
+	"xiti.structures.update.all": "Mettre à jour",
+	"xiti.structures.update.succeed": "La mise à jour a été effectuée avec succès",
+	"xiti.structures.update.fail": "La mise à jour n'a pas pu être effectuée"
 }

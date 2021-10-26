@@ -1,16 +1,18 @@
-import { ng } from 'entcore'
+import { ng, notify } from 'entcore'
 
 export let xitiController = ng.controller('XitiController', ['$scope', '$timeout', 'model', ($scope, $timeout, model) => {
 	$scope.conf = model.conf
 	$scope.structures = model.structures
 	$scope.tenants = model.tenants
 
+	$scope.disableButton = false;
+
 	$scope.performChange = function(form, action){
 		if(form.$valid)
 			action()
 	}
 
-	$scope.updateAllStructures = function(){
+	$scope.updateAllStructures = async function(){
 		let structures = [];
 		$scope.structures.all.forEach((structure) => {
 			structures.push({
@@ -23,7 +25,15 @@ export let xitiController = ng.controller('XitiController', ['$scope', '$timeout
 			});
 		});
 		if(structures.length > 0){
-			$scope.conf.upsertStructureByUAI(structures);
+			$scope.disableButton = true;
+			let req = await $scope.conf.upsertStructureByUAI(structures);
+			if (req.status != 200) {
+				notify.error("xiti.structures.update.fail");
+			} else {
+				notify.info("xiti.structures.update.succeed");
+			}
+			$scope.disableButton = false;
+			$scope.$apply();
 		}
 	}
 
