@@ -15,7 +15,7 @@ db.Xiti.find().forEach(function(document){
             value.active = true;
             numberOfStructuresUpdated++;
         }
-        value.collectiviteId = NumberInt(value.collectiviteId);
+        if (value.collectiviteId) value.collectiviteId = NumberInt(value.collectiviteId);
     }
     delete documentAsJson._id;
     db.Xiti.updateOne(
