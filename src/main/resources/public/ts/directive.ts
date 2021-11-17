@@ -82,7 +82,7 @@ let xiti = async function(locationPath = window.location.pathname) {
         "Guest": "AUTRE"
     }
 
-    let PROFILE = "";
+    let PROFILE = "AUTRE";
     if (model.me.profiles && model.me.profiles.length > 0) {
         PROFILE = profileMap[model.me.profiles[0]];
     }
