@@ -2,32 +2,56 @@ import { model as Model, appPrefix } from 'entcore';
 import http from "axios";
 
 let windowAsAny = window as any;
+if (!windowAsAny.xiti) windowAsAny.xiti = {};
 
 declare var model: any;
 declare var ATInternet: any;
 
-let xiti = async function(locationPath = window.location.pathname) {
-    console.log("Xiti directive");
-
-    let scriptPath = '/xiti/public/js/lib/smarttag_ENT.js';
-    let response = await http.get(scriptPath);
-    if (response.status != 200) return;
-    eval(response.data);
+let load = async function (): Promise<boolean> {
 
     if (Model) model = Model; // Trick to make it work in JS modules
 
-    let xitiConf = await http.get('/xiti/config');
-    if (xitiConf.status != 200) return;
-
-    let structure;
-    for (let struc of model.me.structures) {
-        let s = xitiConf.data.structureMap[struc];
-        if (s && s.collectiviteId && s.UAI) {
-            structure = s;
-            break;
-        }
+    if (!windowAsAny.xiti.ATInternet) {
+        let scriptPath = '/xiti/public/js/lib/smarttag_ENT.js';
+        let response = await http.get(scriptPath);
+        if (response.status != 200) return false;
+        eval(response.data);
+        windowAsAny.xiti.ATInternet = ATInternet;
     }
-    if (!structure || !structure.active) return;
+
+    let xitiConf;
+    if (!windowAsAny.xiti.conf) {
+        xitiConf = await http.get('/xiti/config');
+        if (xitiConf.status != 200) return false;
+        if (!xitiConf.data.structureMap) return false;
+        windowAsAny.xiti.conf = xitiConf.data;
+    }
+
+    if (!windowAsAny.xiti.structure) {
+        let structure;
+        for (let struc of model.me.structures) {
+            let s = windowAsAny.xiti.conf.structureMap[struc];
+            if (s && s.collectiviteId && s.UAI) {
+                structure = s;
+                break;
+            }
+        }
+        if (!structure || !structure.active) return false;
+        windowAsAny.xiti.structure = structure;
+    }
+
+    return true;
+}
+
+let run = async function(locationPath = window.location.pathname) {
+    console.log("Xiti directive");
+
+    let loadDependancies = await load();
+    if (!loadDependancies) return;
+
+    let ATInternet = windowAsAny.xiti.ATInternet;
+    let xitiConf = windowAsAny.xiti.conf;
+    let structure = windowAsAny.xiti.structure;
 
     let appConf = await http.get(`/${appPrefix}/conf/public`);
     if (appConf.status != 200) return;
@@ -52,14 +76,14 @@ let xiti = async function(locationPath = window.location.pathname) {
     }
 
     // PROJET
-    let PROJET = xitiConf.data.ID_PROJET;
+    let PROJET = xitiConf.ID_PROJET;
     if (structure.projetId) PROJET = structure.projetId;
 
     // EXPLOITANT
-    let EXPLOITANT = xitiConf.data.ID_EXPLOITANT;
+    let EXPLOITANT = xitiConf.ID_EXPLOITANT;
 
     // PLATFORME
-    let PLATFORME = xitiConf.data.ID_PLATEFORME;
+    let PLATFORME = xitiConf.ID_PLATEFORME;
     if (structure.plateformeId) PLATFORME = structure.plateformeId;
 
     let pseudonymization = function(stringId){
@@ -122,6 +146,58 @@ let xiti = async function(locationPath = window.location.pathname) {
     ATTag.dispatch();
 }
 
-windowAsAny.xiti = xiti;
+windowAsAny.xiti.run = run;
 
-xiti();
+let click = async function(name: string, element: Element) {
+
+    console.log("xiti click !!!");
+
+    let loadDependancies = await load();
+    if (!loadDependancies) return;
+
+    let ATInternet = windowAsAny.xiti.ATInternet;
+    let structure = windowAsAny.xiti.structure;
+
+    let casMapping;
+    try {
+        casMapping = await http.get(`/xiti/cas-infos/${name}`);
+    } catch (error) {
+        return;
+    }
+    if (casMapping.status != 200) return;
+    if (!casMapping.data.xitiService || !casMapping.data.xitiOutil) return;
+
+    //SERVICE
+    const SERVICE = casMapping.data.xitiService;
+
+    //OUTIL
+    const OUTIL = casMapping.data.xitiOutil;
+
+    const props = {
+        "SERVICE": SERVICE,
+        "TYPE": "TIERS",
+        "OUTIL": OUTIL,
+    }
+
+    // NAME
+    const NAME = name;
+
+    // TYPE
+    const TYPE = "navigation";
+
+    // UAI
+    const UAI = structure.UAI;
+
+    let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
+
+    ATTag.setProp(props, false); 
+
+    ATTag.click.send({
+        elem: element,
+        name: NAME,
+        type: TYPE,
+        level2: UAI,
+    }); 
+}
+
+windowAsAny.xiti.click = click;

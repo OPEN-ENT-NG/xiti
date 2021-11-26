@@ -109,4 +109,17 @@ public class XitiController extends MongoDbControllerHelper {
 		});
 	}
 
+	@Get("/cas-infos/:connector")
+	@SecuredAction(type = ActionType.AUTHENTICATED, value = "")
+	public void getCasInfos(final HttpServerRequest request){
+		final String connector = request.params().get("connector");
+		service.getCasInfos(connector, handler -> {
+			if (handler.isRight()) {
+				renderJson(request, handler.right().getValue());
+			} else {
+				renderError(request, new JsonObject().put("error", handler.left().getValue()));
+			}
+		});
+	}
+
 }

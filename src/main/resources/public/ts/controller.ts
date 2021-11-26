@@ -49,7 +49,7 @@ export let xitiController = ng.controller('XitiController', ['$scope', '$timeout
 					"plateformeId": $scope.conf.structureMap[structure.id].plateformeId,
 					"UAI": $scope.conf.structureMap[structure.id].UAI,
 					"active": $scope.conf.structureMap[structure.id].active
-				});
+				})
 			}
 		});
 		if(structures.length > 0){

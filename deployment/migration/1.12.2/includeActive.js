@@ -1,6 +1,7 @@
 var numberOfStructuresUpdated = 0;
 
 db.Xiti.find().forEach(function(document){
+db.Xiti.find({"active": true}).forEach(function(document){
     var documentAsJson = JSON.parse(JSON.stringify(document));
     if (!documentAsJson.structureMap) return;
     for(let key in documentAsJson.structureMap) {

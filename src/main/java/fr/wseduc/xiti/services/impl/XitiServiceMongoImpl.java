@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.entcore.common.mongodb.MongoDbResult;
+import org.entcore.common.neo4j.Neo4j;
 import org.entcore.common.service.impl.MongoDbCrudService;
 import org.entcore.common.user.DefaultFunctions;
 import org.entcore.common.user.UserInfos;
@@ -36,16 +37,19 @@ import io.vertx.core.logging.LoggerFactory;
 import fr.wseduc.mongodb.MongoDb;
 import fr.wseduc.webutils.Either;
 import fr.wseduc.xiti.services.XitiService;
+import org.entcore.common.utils.StringUtils;
 
 public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiService {
 	private Logger log = LoggerFactory.getLogger(XitiServiceMongoImpl.class);
 	private final String collection;
 	private final MongoDb mongo;
+	private final Neo4j neo;
 
 	public XitiServiceMongoImpl(String collection) {
 		super(collection);
 		this.collection = collection;
 		this.mongo = MongoDb.getInstance();
+		this.neo = Neo4j.getInstance();
 	}
 
 	public void upsertPlatform(JsonObject data, Handler<Either<String, JsonObject>> handler){
@@ -108,6 +112,34 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 				handler.handle(res);
 			}
 		}));
+	}
+
+	public void getCasInfos(String connector, Handler<Either<String, JsonObject>> handler) {
+		final String query = "MATCH (a:Application {name: {name}}) RETURN a.statCasType AS type";
+		JsonObject params = new JsonObject().put("name", connector);
+		neo.execute(query, params, event -> {
+			if ("ok".equals(event.body().getString("status"))) {
+				final JsonArray result = event.body().getJsonArray("result");
+				final String type = result.getJsonObject(0).getString("type");
+				if (!StringUtils.isEmpty(type)) {
+					JsonObject criteria = new JsonObject().put("_id", type);
+					mongo.findOne("casMapping", criteria, MongoDbResult.validResultHandler(res -> {
+						if (res.isRight()) {
+							handler.handle(new Either.Right<>(new JsonObject()
+									.put("xitiOutil", res.right().getValue().getString("xitiOutil"))
+									.put("xitiService", res.right().getValue().getString("xitiService"))
+							));
+						} else {
+							handler.handle(new Either.Left<>(res.left().getValue()));
+						}
+					}));
+				} else {
+					handler.handle(new Either.Left<>("Error, no statCasType was found for connector: " + connector));
+				}
+			} else {
+				handler.handle(new Either.Left<>(event.body().getString("message")));
+			}
+		});
 	}
 
 }

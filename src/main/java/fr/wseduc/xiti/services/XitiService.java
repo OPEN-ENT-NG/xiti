@@ -34,6 +34,6 @@ public interface XitiService {
 	public void upsertPlatform(JsonObject data, Handler<Either<String, JsonObject>> handler);
 	public void upsertStructure(String structureId, JsonObject structure, Handler<Either<String, JsonObject>> handler);
 	public void upsertStructures(JsonArray data, Handler<Either<String, JsonObject>> handler);
-
+	public void getCasInfos(String connector, Handler<Either<String, JsonObject>> handler);
 
 }
