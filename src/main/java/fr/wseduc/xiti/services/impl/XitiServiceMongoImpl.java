@@ -134,7 +134,7 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 						}
 					}));
 				} else {
-					handler.handle(new Either.Left<>("Error, no statCasType was found for connector: " + connector));
+					handler.handle(new Either.Right<>(new JsonObject()));
 				}
 			} else {
 				handler.handle(new Either.Left<>(event.body().getString("message")));

@@ -160,7 +160,7 @@ let click = async function(name: string, element: Element) {
 
     let casMapping;
     try {
-        casMapping = await http.get(`/xiti/cas-infos/${name}`);
+        casMapping = await http.get(`/xiti/cas-infos?connector=${name}`);
     } catch (error) {
         return;
     }
