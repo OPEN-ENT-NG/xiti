@@ -190,7 +190,7 @@ let click = async function(name: string, element: Element) {
 
     let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
 
-    ATTag.setProp(props, false); 
+    ATTag.setProps(props, false);
 
     ATTag.click.send({
         elem: element,
