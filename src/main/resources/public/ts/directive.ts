@@ -43,23 +43,22 @@ let load = async function (): Promise<boolean> {
     return true;
 }
 
-let run = async function(locationPath = window.location.pathname) {
-    console.log("Xiti directive");
+let prepareATTag = async function(locationPath: string): Promise<boolean> {
 
     let loadDependancies = await load();
-    if (!loadDependancies) return;
+    if (!loadDependancies) return false;
 
     let ATInternet = windowAsAny.xiti.ATInternet;
     let xitiConf = windowAsAny.xiti.conf;
     let structure = windowAsAny.xiti.structure;
 
     let appConf = await http.get(`/${appPrefix}/conf/public`);
-    if (appConf.status != 200) return;
+    if (appConf.status != 200) return false;
     let appXitiConf = appConf.data.xiti;
-    if (!appXitiConf) return;
+    if (!appXitiConf) return false;
 
     // LIBELLE_SERVICE
-    if (!appXitiConf.LIBELLE_SERVICE) return;
+    if (!appXitiConf.LIBELLE_SERVICE) return false;
     let SERVICE = appXitiConf.LIBELLE_SERVICE.default || null;
     for(let prop in appXitiConf.LIBELLE_SERVICE){
         if(prop !== 'default' && locationPath.indexOf(prop) >= 0){
@@ -143,6 +142,17 @@ let run = async function(locationPath = window.location.pathname) {
         level2: UAI,
     });
 
+    windowAsAny.xiti.ATTag = ATTag;
+
+    return true;
+}
+
+let run = async function(locationPath: string = window.location.pathname) {
+
+    console.log("Xiti directive");
+    let prepare: boolean = await prepareATTag(locationPath);
+    if (!prepare) return;
+    let ATTag = windowAsAny.xiti.ATTag;
     ATTag.dispatch();
 }
 
@@ -152,10 +162,11 @@ let click = async function(name: string, element: Element) {
 
     console.log("xiti click !!!");
 
-    let loadDependancies = await load();
-    if (!loadDependancies) return;
+    if (!windowAsAny.xiti || !windowAsAny.xiti.ATTag) {
+        let prepare: boolean = await prepareATTag(window.location.pathname);
+        if (!prepare) return false;
+    }
 
-    let ATInternet = windowAsAny.xiti.ATInternet;
     let structure = windowAsAny.xiti.structure;
 
     let casMapping;
@@ -188,7 +199,7 @@ let click = async function(name: string, element: Element) {
     // UAI
     const UAI = structure.UAI;
 
-    let ATTag = new ATInternet.Tracker.Tag({site: structure.collectiviteId});
+    let ATTag = windowAsAny.xiti.ATTag;
 
     ATTag.setProps(props, false);
 
