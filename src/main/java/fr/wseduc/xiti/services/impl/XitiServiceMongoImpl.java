@@ -120,21 +120,25 @@ public class XitiServiceMongoImpl extends MongoDbCrudService implements XitiServ
 		neo.execute(query, params, event -> {
 			if ("ok".equals(event.body().getString("status"))) {
 				final JsonArray result = event.body().getJsonArray("result");
-				final String type = result.getJsonObject(0).getString("type");
-				if (!StringUtils.isEmpty(type)) {
-					JsonObject criteria = new JsonObject().put("_id", type);
-					mongo.findOne("casMapping", criteria, MongoDbResult.validResultHandler(res -> {
-						if (res.isRight()) {
-							handler.handle(new Either.Right<>(new JsonObject()
-									.put("xitiOutil", res.right().getValue().getString("xitiOutil"))
-									.put("xitiService", res.right().getValue().getString("xitiService"))
-							));
-						} else {
-							handler.handle(new Either.Left<>(res.left().getValue()));
-						}
-					}));
-				} else {
-					handler.handle(new Either.Right<>(new JsonObject()));
+				if(result.size() > 0){
+					final String type = result.getJsonObject(0).getString("type");
+					if (!StringUtils.isEmpty(type)) {
+						JsonObject criteria = new JsonObject().put("_id", type);
+						mongo.findOne("casMapping", criteria, MongoDbResult.validResultHandler(res -> {
+							if (res.isRight()) {
+								handler.handle(new Either.Right<>(new JsonObject()
+										.put("xitiOutil", res.right().getValue().getString("xitiOutil"))
+										.put("xitiService", res.right().getValue().getString("xitiService"))
+								));
+							} else {
+								handler.handle(new Either.Left<>(res.left().getValue()));
+							}
+						}));
+					} else {
+						handler.handle(new Either.Right<>(new JsonObject()));
+					}
+				}else{
+					handler.handle(new Either.Left<>("app.notfound"));
 				}
 			} else {
 				handler.handle(new Either.Left<>(event.body().getString("message")));
