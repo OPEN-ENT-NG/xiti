@@ -20,6 +20,7 @@
 package fr.wseduc.xiti;
 
 import fr.wseduc.xiti.events.XitiRepositoryEvents;
+import io.vertx.core.Promise;
 import org.entcore.common.http.BaseServer;
 
 import fr.wseduc.xiti.controllers.XitiController;
@@ -30,10 +31,11 @@ public class Xiti extends BaseServer {
 	private static final String collection = "Xiti";
 
 	@Override
-	public void start() throws Exception {
-		super.start();
+	public void start(Promise<Void> startPromise) throws Exception {
+		super.start(startPromise);
 		addController(new XitiController(collection));
 		setRepositoryEvents(new XitiRepositoryEvents(vertx, collection));
+		startPromise.tryComplete();
 	}
 
 }
