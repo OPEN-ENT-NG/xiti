@@ -39,3 +39,5 @@ package-lock.json
 gradle/
 gradlew*
 rev-manifest.json
+.env
+dependency-reduced-pom.xml
