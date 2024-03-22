@@ -32,7 +32,6 @@
         <entCoreVersion>5.0-b2school-SNAPSHOT</entCoreVersion>
         <webUtilsVersion>3.0-b2school-SNAPSHOT</webUtilsVersion>
         <mongodb-helper.version>3.0-b2school-SNAPSHOT</mongodb-helper.version>
-        <gatlingHighchartsVersion>2.2.2</gatlingHighchartsVersion>
     </properties>
 
     <dependencies><!-- Reporter les dépendances qui étaient dans build.gradle > dependencies -->
