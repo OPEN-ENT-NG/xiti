@@ -29,9 +29,9 @@
     </repositories>
 
     <properties>
-        <entCoreVersion>6.0-SNAPSHOT</entCoreVersion>
+        <entCoreVersion>6.0-develop-pedago-SNAPSHOT</entCoreVersion>
         <webUtilsVersion>3.0-SNAPSHOT</webUtilsVersion>
-        <mongodb-helper.version>3.0-SNAPSHOT</mongodb-helper.version>
+        <mongodb-helper.version>3.0-develop-pedago-SNAPSHOT</mongodb-helper.version>
     </properties>
 
     <dependencies><!-- Reporter les dépendances qui étaient dans build.gradle > dependencies -->
