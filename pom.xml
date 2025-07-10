@@ -29,9 +29,9 @@
     </repositories>
 
     <properties>
-        <entCoreVersion>6.7-SNAPSHOT</entCoreVersion>
-        <webUtilsVersion>3.1-SNAPSHOT</webUtilsVersion>
-        <mongodb-helper.version>3.0-SNAPSHOT</mongodb-helper.version>
+        <entCoreVersion>6.7-develop-b2school-SNAPSHOT</entCoreVersion>
+        <webUtilsVersion>3.1-develop-b2school-SNAPSHOT</webUtilsVersion>
+        <mongodb-helper.version>4.0-develop-b2school-SNAPSHOT</mongodb-helper.version>
     </properties>
 
     <dependencies><!-- Reporter les dépendances qui étaient dans build.gradle > dependencies -->
